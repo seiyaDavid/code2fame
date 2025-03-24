@@ -1,4 +1,50 @@
 """
+
+
+# Training Epochs vs. Number of Optimization Trials
+
+These are two different concepts in your synthetic data generation application:
+
+## Training Epochs
+
+**Training Epochs** refers to how many times the model (CTGAN, TVAE, or CopulaGAN) will iterate through the entire dataset during training.
+
+- **What it does**: Each epoch represents one complete pass through all your data
+- **Effect on model**: More epochs generally allow the model to learn the data patterns better
+- **Trade-off**: More epochs = better learning but longer training time and potential overfitting
+- **Typical values**: 100-300 epochs for synthetic data generation
+- **When to increase**: When your synthetic data doesn't capture the patterns in your original data
+- **When to decrease**: When training takes too long or when the model is memorizing the original data
+
+## Number of Optimization Trials
+
+**Number of Optimization Trials** refers to how many different combinations of hyperparameters Optuna will test when you enable the "Optimize Model Parameters" option.
+
+- **What it does**: Each trial tests a different set of hyperparameters (epochs, batch size, network architecture, etc.)
+- **Effect on model**: More trials help find better hyperparameter combinations
+- **Trade-off**: More trials = better parameters but much longer total processing time
+- **Typical values**: 10-30 trials is usually sufficient
+- **When to increase**: When you want to find the absolute best parameters and have time to wait
+- **When to decrease**: When you need results quickly and are willing to accept "good enough" parameters
+
+## Key Differences
+
+1. **Purpose**:
+   - Epochs: How long to train a single model
+   - Trials: How many different model configurations to test
+
+2. **Time Impact**:
+   - 10 epochs = 10× through your data
+   - 10 trials = 10 different models trained (each with their own epochs)
+
+3. **What's Being Changed**:
+   - Epochs: Just the weights in the neural network
+   - Trials: The entire model architecture and training parameters
+
+When you enable optimization, the epochs parameter becomes one of the hyperparameters that Optuna will tune, so the final model might use a different number of epochs than what you initially specified.
+
+
+
 These additions will provide a more comprehensive privacy assessment of the 
 synthetic data, including advanced metrics that are commonly used in 
 privacy-preserving data synthesis. The membership attack simulation tests how 
